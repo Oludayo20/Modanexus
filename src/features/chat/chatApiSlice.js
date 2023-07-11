@@ -56,9 +56,9 @@ export const {
   useChatLayoutQuery
 } = chatApiSlice;
 
-export const subscribeToNewMessages = (callback) => {
-  pusher.subscribe('chat-channel').bind('new-message', callback);
-};
+// export const subscribeToNewMessages = (callback) => {
+//   pusher.subscribe('chat-channel').bind('new-message', callback);
+// };
 
 // returns the query result object
 export const selectChatResult = chatApiSlice.endpoints.getMessages.select();
