@@ -1,4 +1,4 @@
-import { Avatar } from '@mui/material';
+import { Avatar, AvatarGroup } from '@mui/material';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
@@ -6,23 +6,59 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import AddCommentIcon from '@mui/icons-material/AddComment';
 import DoneIcon from '@mui/icons-material/Done';
 import Helmet from '../../components/Helmet';
+import { useMyFriendsQuery } from '../friends/friendApiSlice';
+import MyFriendsList from '../friends/MyFriendsList';
+import { useChatLayoutQuery } from './chatApiSlice';
+import Conversation from './Conversation';
+import LoadingSpinner from '../../utils/LoadingSpinner';
+import ToastContainer from '../../utils/ToastContainer';
 
 const ChatLayout = () => {
+  const {
+    data: myFriends,
+    isLoading,
+    isSuccess,
+    isError,
+    error
+  } = useMyFriendsQuery('myFriendsList', {
+    pollingInterval: 15000,
+    refetchOnFocus: true,
+    refetchOnMountOrArgChange: true
+  });
+
+  let MyFriendsListContent;
+
+  if (isSuccess) {
+    const { ids } = myFriends;
+
+    let allMyFriends = ids?.length ? (
+      ids.map((myFriendId) => (
+        <Conversation key={myFriendId} myFriendId={myFriendId} />
+      ))
+    ) : (
+      <h1>No Conversation</h1>
+    );
+
+    MyFriendsListContent = <div className="">{allMyFriends}</div>;
+  }
+
   return (
     <Helmet title="Chat-Layout">
-      <div className="flex-1 h-[90vh] overflow-auto pb-10">
-        <div className="flex justify-between items-center">
-          <h1 className="mt-4 dark:text-gray-200">My Chat...</h1>
-          <AddCommentIcon className="w-5 h-5 dark:text-gray-200" />
-        </div>
-
-        <div className="w-full bg-white dark:bg-gray-800 p-5 rounded-lg">
+      <div className="">
+        {isLoading && <LoadingSpinner />}
+        {isError && (
+          <ToastContainer messages={error?.data?.errors} status={'error'} />
+        )}
+        <div className="bg-white dark:bg-gray-800 p-5 rounded-lg">
           <div className="flex justify-between items-center">
+            <h1 className="mt-4 dark:text-gray-200">My Chat...</h1>
+            <MyFriendsList />
+            {/* <AddCommentIcon className="w-5 h-5 dark:text-gray-200" /> */}
+          </div>
+
+          <div className="flex justify-between items-center bg-white dark:bg-gray-800 rounded-lg">
             <form className="">
-              <label className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
-                Search
-              </label>
-              <div className="relative">
+              <div className="relative lg:w-[25vw]">
                 <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
                   <SearchIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
                 </div>
@@ -41,29 +77,15 @@ const ChatLayout = () => {
                 </button>
               </div>
             </form>
-            <MoreVertIcon className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+            <MoreVertIcon className="ml-10 w-5 h-5 text-gray-500 dark:text-gray-400" />
           </div>
         </div>
-        <h1 className="mt-4 dark:text-gray-200">Recent Messages...</h1>
+
+        <h1 className="mt-4 dark:text-gray-200">Messages...</h1>
 
         <div className="w-full bg-white dark:bg-gray-800 p-5 rounded-lg">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center">
-              <Avatar className="h-10 w-10 rounded-full object-cover" />
-              <div className="ml-2">
-                <h1 className="text-sm dark:text-gray-200">Karo Oghene</h1>
-                <p>Good Morning...</p>
-              </div>
-            </div>
-            <div className="block">
-              <p className="text-sm">3:14 AM</p>
-              <p className="p-0.5 ml-5 w-5 text-sm text-white bg-red-500 rounded-xl flex justify-center items-center">
-                1
-              </p>
-            </div>
-          </div>
-          <hr className="ml-10 mt-2" />
-          <div className="flex justify-between items-center mt-2">
+          {MyFriendsListContent}
+          {/* <div className="flex justify-between items-center mt-2">
             <div className="flex items-center">
               <Avatar className="h-10 w-10 rounded-full object-cover" />
               <div className="ml-2">
@@ -78,11 +100,11 @@ const ChatLayout = () => {
               </p>
             </div>
           </div>
-          <hr className="ml-10 mt-2" />
+          <hr className="ml-10 mt-2" /> */}
         </div>
-        <h1 className="mt-4 dark:text-gray-200">Other Messages...</h1>
+        {/* <h1 className="mt-4 dark:text-gray-200">Other Messages...</h1> */}
 
-        <div className="w-full bg-white dark:bg-gray-800 p-5 rounded-lg">
+        {/* <div className="w-full bg-white dark:bg-gray-800 p-5 rounded-lg">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
               <Avatar className="h-10 w-10 rounded-full object-cover" />
@@ -197,7 +219,7 @@ const ChatLayout = () => {
             <p className="text-sm">3 Days Ago</p>
           </div>
           <hr className="ml-10" />
-        </div>
+        </div> */}
       </div>
     </Helmet>
   );
