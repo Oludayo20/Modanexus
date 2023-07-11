@@ -19,6 +19,7 @@ import CompleteRegistration from './features/user/CompleteRegistration';
 import ChatLayout from './features/chat/ChatLayout';
 import Chat from './features/chat/Chat';
 import WelcomeScreen from './components/WelcomeScreen';
+import MainLayout from './components/MainLayout';
 
 function App() {
   return (
@@ -45,11 +46,13 @@ function App() {
 
           {/* Protected Routes */}
           <Route element={<RequireAuth />}>
-            <Route path="dash" element={<HomePageLayout />}>
-              <Route index element={<HomeContent />} />
-              <Route path="profile" element={<UserProfile />} />
-              <Route path="chat" element={<ChatLayout />} />
-              <Route path="singleChat" element={<Chat />} />
+            <Route element={<HomePageLayout />}>
+              <Route element={<MainLayout />}>
+                <Route path="home" element={<HomeContent />} />
+                <Route path="profile" element={<UserProfile />} />
+                <Route path="chat" element={<ChatLayout />} />
+                <Route path="single-chat/:id" element={<Chat />} />
+              </Route>
             </Route>
           </Route>
         </Route>

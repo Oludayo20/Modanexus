@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import HeaderLink from './header/HerderLink';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -44,10 +44,10 @@ export const PublicHeader = () => {
       document.documentElement.classList.remove('dark');
       setCurrentTheme('light');
     }
-  });
+  }, []);
 
   const changeTheme = (theme) => {
-    if (theme == 'light') {
+    if (theme === 'light') {
       localStorage.theme = 'light';
       document.documentElement.classList.remove('dark');
       setCurrentTheme('light');
@@ -88,14 +88,6 @@ export const PublicHeader = () => {
               </div>
             )}
           </li>
-          {/* <li className="hidden sm:flex ml-5 ">
-            <NavLink
-              to="/login"
-              className="px-4 py-2 bg-red-500 hover:bg-red-700 focus:bg-red-300 text-white font-semibold rounded"
-            >
-              Login
-            </NavLink>
-          </li> */}
         </ul>
       </div>
     </div>
@@ -108,7 +100,7 @@ export const PublicFooter = () => {
       <div className="bg-white p-5 dark:bg-gray-800">
         <div className="">
           <span className="text-sm text-gray-500 dark:text-gray-300 sm:text-center">
-            © 2023 <a href="">Maverick Dev™</a>. All Rights Reserved.{' '}
+            © 2023 <a href="/">Maverick Dev™</a>. All Rights Reserved.{' '}
           </span>
 
           <span className="text-sm text-gray-500 dark:text-gray-300 sm:text-center">
@@ -117,31 +109,31 @@ export const PublicFooter = () => {
 
           <div className="flex mt-4 space-x-6 sm:justify-center md:mt-0">
             <a
-              href="#"
+              href="/"
               className="text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
               <FacebookIcon />
             </a>
             <a
-              href="#"
+              href="/"
               className="text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
               <InstagramIcon />
             </a>
             <a
-              href="#"
+              href="/"
               className="text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
               <TwitterIcon />
             </a>
             <a
-              href="#"
+              href="/"
               className="text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
               <GitHub />
             </a>
             <a
-              href="#"
+              href="/"
               className="text-gray-400 hover:text-gray-900 dark:hover:text-white"
             >
               <Call />
@@ -153,4 +145,6 @@ export const PublicFooter = () => {
   );
 };
 
-export default { PublicLayout, PublicHeader, PublicFooter };
+const pub = { PublicLayout, PublicHeader, PublicFooter };
+
+export default pub;

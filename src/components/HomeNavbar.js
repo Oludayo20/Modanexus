@@ -1,22 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import SearchIcon from '@mui/icons-material/Search';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
-import MessageIcon from '@mui/icons-material/Message';
-import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import LightModeIcon from '@mui/icons-material/LightMode';
 import HeaderLink from './header/HerderLink';
-
-//
-
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import GroupIcon from '@mui/icons-material/Group';
-import BusinessCenterIcon from '@mui/icons-material/BusinessCenter';
 import ChatIcon from '@mui/icons-material/Chat';
-import NotificationsIcon from '@mui/icons-material/Notifications';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import AppsOutlinedIcon from '@mui/icons-material/AppsOutlined';
-import { Avatar } from '@mui/material';
-import SearchModal from './header/SearchModal';
 import Notifications from './header/Notification';
 import { NavLink } from 'react-router-dom';
 
@@ -59,27 +46,38 @@ const HomeNavbar = () => {
           </h1>
         </div>
 
-        <div className="flex items-center">
+        {/* <div className="flex items-center w-[30vw]">
           <SearchModal text="Search" feed active />
-          <Notifications text="Notifications" feed active />
-          <div className="ml-6"></div>
+        </div> */}
 
-          <NavLink to="/dash">
+        <div className="flex items-center justify-between space-x-8">
+          <NavLink
+            to="home"
+            className="hidden md:inline-flex cursor-pointer text-lg hover:text-black hover:scale-110 transition-all dark:text-gray-200"
+          >
             <HeaderLink
               Icon={HomeRoundedIcon}
               text="Home"
               feed
-              active=""
+              active="home"
               hidden
             />
           </NavLink>
 
-          <NavLink to="/dash/chat">
-            <HeaderLink Icon={ChatIcon} text="Chat" active="chat" feed hidden />
+          <NavLink
+            to="chat"
+            className="hidden md:inline-flex cursor-pointer text-lg hover:text-black hover:scale-110 transition-all dark:text-gray-200"
+          >
+            <HeaderLink Icon={ChatIcon} active="chat" text="Chat" feed hidden />
           </NavLink>
 
+          <Notifications text="Notifications" feed active />
+
           {currentTheme === 'dark' ? (
-            <div onClick={() => changeTheme('light')}>
+            <div
+              onClick={() => changeTheme('light')}
+              className="cursor-pointer text-lg hover:text-black hover:scale-110 transition-all dark:text-gray-200"
+            >
               <HeaderLink
                 Icon={LightModeIcon}
                 text="Light"
@@ -88,7 +86,10 @@ const HomeNavbar = () => {
               />
             </div>
           ) : (
-            <div onClick={() => changeTheme('dark')}>
+            <div
+              onClick={() => changeTheme('dark')}
+              className="cursor-pointer text-lg hover:text-black hover:scale-110 transition-all dark:text-gray-200"
+            >
               <HeaderLink
                 Icon={DarkModeIcon}
                 text="Light"
@@ -97,6 +98,7 @@ const HomeNavbar = () => {
               />
             </div>
           )}
+
           {/* <li className="ml-2 md:ml-5">
             <MessageIcon className="cursor-pointer text-lg hover:text-black hover:scale-110 transition-all dark:text-gray-200" />
           </li>

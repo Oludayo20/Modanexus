@@ -38,7 +38,7 @@ function Notifications({ feed, active, text }) {
     <div className="relative inline-flex">
       <button
         ref={trigger}
-        className={`ml-5 md:ml-10 !h-7 !w-7 lg:!-mb-1 cursor-pointer flex flex-col justify-center items-center ${
+        className={`ml- mr-2 md:ml-2 !h-7 !w-7 lg:!-mb-1 cursor-pointer flex flex-col justify-center items-center ${
           feed
             ? 'text-black/60 hover:text-black dark:text-white/75 dark:hover:text-white lg:-mb-1.5 space-y-1'
             : 'text-gray-500 hover:text-gray-700'
@@ -60,7 +60,7 @@ function Notifications({ feed, active, text }) {
 
       <Transition
         // className="bg-white  mt-1 fixed py-2.5 inset-0 z-50 overflow-hidden flex items-start top-20 mb-4 justify-center transform px-4 sm:px-6"
-        className="origin-top-right z-10 absolute top-full right-0 fixed mr-5 px-20 flex items-start justify-center transform -mr-48 sm:mr-0 min-w-80 bg-white dark:bg-gray-700 border border-slate-200 py-2.5 rounded shadow-lg overflow-hidden mt-1"
+        className="origin-top-right z-[-5] absolute top-full right-0 fixed mr-5 px-20 flex items-start justify-center transform -mr-48 sm:mr-0 min-w-80 bg-white dark:bg-gray-700 border border-slate-200 py-2.5 rounded shadow-lg overflow-hidden mt-1"
         show={dropdownOpen}
         enter="transition ease-out duration-200 transform"
         enterStart="opacity-0 -translate-y-2"

@@ -6,11 +6,7 @@ const HomeContent = () => {
   return (
     <div className="flex-1 h-[90vh] overflow-auto pb-10">
       <NewPost />
-      {/* <OnYourMind /> */}
       <PostsList />
-      {/* <Feeds />
-      <Feeds />
-      <Feeds /> */}
     </div>
   );
 };

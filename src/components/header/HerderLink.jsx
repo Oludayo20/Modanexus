@@ -5,21 +5,17 @@ function HeaderLink({ Icon, text, feed, active, avatar, hidden, activeTop }) {
   const location = useLocation();
   const { pathname } = location;
 
-  const session = '';
   const userData = useAuth();
 
   return (
     <div
-      className={`md:ml-10 ${
+      className={`md:ml-10${
         hidden && 'hidden md:inline-flex'
       } cursor-pointer flex flex-col justify-center items-center ${
         feed
           ? 'text-black/60 hover:text-black dark:text-white/75 dark:hover:text-white lg:-mb-1.5 space-y-1'
           : 'text-gray-500 hover:text-gray-700'
-      } ${
-        pathname.includes(active) ||
-        (pathname.includes(activeTop) && '!text-black dark:!text-white')
-      }`}
+      } ${pathname.includes(activeTop) && '!text-black dark:!text-white'}`}
     >
       {pathname.includes(activeTop) && (
         <span className="mb-2 lg:inline-flex h-0.5 w-[calc(100%+20px)] bg-black dark:bg-white rounded-t-full" />
