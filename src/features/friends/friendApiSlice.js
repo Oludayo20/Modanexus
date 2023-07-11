@@ -2,24 +2,44 @@ import { createSelector, createEntityAdapter } from '@reduxjs/toolkit';
 import { apiSlice } from '../../app/api/apiSlice';
 
 const friendsAdapter = createEntityAdapter({});
+const friendsRequestAdapter = createEntityAdapter({});
+const myFriendsAdapter = createEntityAdapter({});
 
 const initialState = friendsAdapter.getInitialState();
+const initialRequestState = friendsRequestAdapter.getInitialState();
+const initialMyFriendsState = myFriendsAdapter.getInitialState();
 
 export const friendsApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getFriend: builder.query({
-      query: () => 'userprofile',
-      validateStatus: (response) => response.status === 200
-    }),
-    getFriends: builder.query({
-      query: () => '/friends',
+    myFriends: builder.query({
+      query: () => 'friends',
       validateStatus: (response, result) => {
         return response.status === 200 && !result.isError;
       },
       transformResponse: (responseData) => {
-        console.log(responseData);
+        const myLoadedFriends = responseData?.data.map((user) => {
+          user.userId = user._id;
+          return user;
+        });
+        return myFriendsAdapter.setAll(initialMyFriendsState, myLoadedFriends);
+      },
+      providesTags: (result, error, arg) => {
+        if (result?.ids) {
+          return [
+            { type: 'MyFriends', id: 'LIST' },
+            ...result.ids.map((id) => ({ type: 'Friend', id }))
+          ];
+        } else return [{ type: 'MyFriends', id: 'LIST' }];
+      }
+    }),
+    getFriends: builder.query({
+      query: () => 'userprofile/GetUsersProfile',
+      validateStatus: (response, result) => {
+        return response.status === 200 && !result.isError;
+      },
+      transformResponse: (responseData) => {
         const loadedUsers = responseData?.data.map((user) => {
-          user.id = user._id;
+          user.userId = user._id;
           return user;
         });
         return friendsAdapter.setAll(initialState, loadedUsers);
@@ -33,32 +53,48 @@ export const friendsApiSlice = apiSlice.injectEndpoints({
         } else return [{ type: 'Friend', id: 'LIST' }];
       }
     }),
-
+    receivedFriendRequest: builder.query({
+      query: () => 'friends/received-friend-requests',
+      validateStatus: (response, result) => {
+        return response.status === 200 && !result.isError;
+      },
+      transformResponse: (responseData) => {
+        const loadedFriendsRequest = responseData?.data.map((user) => {
+          user.userId = user._id;
+          return user;
+        });
+        return friendsAdapter.setAll(initialRequestState, loadedFriendsRequest);
+      },
+      providesTags: (result, error, arg) => {
+        if (result?.ids) {
+          return [
+            { type: 'Friend', id: 'LIST' },
+            ...result.ids.map((id) => ({ type: 'Friend', id }))
+          ];
+        } else return [{ type: 'Friend', id: 'LIST' }];
+      }
+    }),
     addNewFriend: builder.mutation({
-      query: (initialUserData) => ({
-        url: '/users',
+      query: (friendUserName) => ({
+        url: `friends/SendFriendRequest/${friendUserName}`,
         method: 'POST',
-        body: {
-          ...initialUserData
-        }
+        body: { friendUserName }
       }),
       invalidatesTags: [{ type: 'Friend', id: 'LIST' }]
     }),
-    updateUser: builder.mutation({
-      query: (initialUserData) => ({
-        url: '/users',
-        method: 'PATCH',
-        body: {
-          ...initialUserData
-        }
+    acceptFriendRequest: builder.mutation({
+      query: (friendUserName) => ({
+        url: `friends/AcceptFriendRequest/${friendUserName}`,
+        method: 'PUT',
+        body: { friendUserName }
       }),
       invalidatesTags: (result, error, arg) => [{ type: 'Friend', id: arg.id }]
     }),
-    deleteUser: builder.mutation({
-      query: ({ id }) => ({
-        url: `/users`,
+    deleteFriendRequest: builder.mutation({
+      query: (friendUserName) => ({
+        url: `friends/delete-friend/${friendUserName}`,
         method: 'DELETE',
-        body: { id }
+        body: { friendUserName }
       }),
       invalidatesTags: (result, error, arg) => [{ type: 'Friend', id: arg.id }]
     })
@@ -66,12 +102,31 @@ export const friendsApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useGetFriendQuery,
+  useMyFriendsQuery,
   useGetFriendsQuery,
   useAddNewFriendMutation,
-  useUpdateUserMutation,
-  useDeleteUserMutation
+  useReceivedFriendRequestQuery,
+  useAcceptFriendRequestMutation,
+  useDeleteFriendRequestMutation
 } = friendsApiSlice;
+
+// for my friend requests
+export const selectMyFriendsResult =
+  friendsApiSlice.endpoints.myFriends.select();
+
+const selectMyFriendsData = createSelector(
+  selectMyFriendsResult,
+  (MyFriendsResult) => MyFriendsResult.data
+);
+
+export const {
+  selectAll: selectAllMyFriends,
+  selectById: selectMyFriendsById,
+  selectIds: selectMyFriendsIds
+  // Pass in a selector that returns the users slice of state
+} = friendsAdapter.getSelectors(
+  (state) => selectMyFriendsData(state) ?? initialRequestState
+);
 
 // returns the query result object
 export const selectFriendsResult =
@@ -91,4 +146,22 @@ export const {
   // Pass in a selector that returns the users slice of state
 } = friendsAdapter.getSelectors(
   (state) => selectFriendsData(state) ?? initialState
+);
+
+// for friend requests
+export const selectFriendsRequestResult =
+  friendsApiSlice.endpoints.receivedFriendRequest.select();
+
+const selectFriendsRequestData = createSelector(
+  selectFriendsRequestResult,
+  (friendsRequestResult) => friendsRequestResult.data
+);
+
+export const {
+  selectAll: selectAllFriendsRequest,
+  selectById: selectFriendRequestById,
+  selectIds: selectFriendRequestIds
+  // Pass in a selector that returns the users slice of state
+} = friendsAdapter.getSelectors(
+  (state) => selectFriendsRequestData(state) ?? initialRequestState
 );
