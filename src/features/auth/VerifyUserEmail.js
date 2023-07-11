@@ -102,7 +102,7 @@ const VerifyUserEmail = () => {
               <button
                 disabled={!canVerify}
                 onClick={onVerify}
-                className="px-2 py-2 text-white bg-red-300 rounded"
+                className="px-2 py-2 text-white bg-red-500 rounded"
               >
                 Click to Verify Email
               </button>

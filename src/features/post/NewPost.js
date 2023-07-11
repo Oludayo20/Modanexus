@@ -177,7 +177,6 @@ const NewPost = () => {
         documentUrl: selectedDocuments,
         visibilityStatus
       }).unwrap();
-      console.log(post);
     } catch (error) {
       console.log(error);
     }

@@ -1,5 +1,4 @@
 import { Avatar } from '@mui/material';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import IosShareIcon from '@mui/icons-material/IosShare';
 import ThumbUpOffAltOutlinedIcon from '@mui/icons-material/ThumbUpOffAltOutlined';
 import CommentOutlinedIcon from '@mui/icons-material/CommentOutlined';
@@ -7,12 +6,14 @@ import { useGetPostsQuery } from './postAPiSlice';
 import Time from '../../utils/time';
 import Helmet from '../../components/Helmet';
 import useAuth from '../../hooks/useAuth';
-import { useState } from 'react';
+import { useState, useRef, memo } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useDeletePostMutation } from './postAPiSlice';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import ToastContainer from '../../utils/ToastContainer';
-import { memo } from 'react';
+import { useEffect } from 'react';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { useAddNewFriendMutation } from '../friends/friendApiSlice';
 
 const Post = ({ postId }) => {
   const { post } = useGetPostsQuery('postList', {
@@ -21,12 +22,18 @@ const Post = ({ postId }) => {
     })
   });
 
-  console.log(post);
-
-  const [deletePost, { data, isLoading, isSuccess, isError, error }] =
+  const [deletePost, { isLoading, isSuccess, isError, error }] =
     useDeletePostMutation();
 
-  console.log(data);
+  const [
+    addNewFriend,
+    {
+      isLoading: isAddNewFriendLoading,
+      isSuccess: isAddNewFriendSuccess,
+      isError: isAddNewFriendIsError,
+      error: isAddNewFriendError
+    }
+  ] = useAddNewFriendMutation();
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -35,57 +42,110 @@ const Post = ({ postId }) => {
   };
 
   const onDeletePostClicked = async () => {
-    await deletePost({ postId: post?.id });
+    console.log({ postId: post?.id });
+    const data = await deletePost({ postId: post?.id });
+    console.log(data);
   };
+
+  const onClickAddNewFriend = async () => {
+    const req = await addNewFriend(post?.userProfile?.userName);
+    console.log(req);
+  };
+
+  {
+    /* Video Auto Play*/
+  }
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (!videoRef.current) return;
+
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5 // Adjust this value as needed
+    };
+
+    const handleIntersection = (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          videoRef.current.play();
+        } else {
+          videoRef.current.pause();
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, options);
+    observer.observe(videoRef.current);
+
+    return () => {
+      observer.unobserve(videoRef.current);
+    };
+  }, []);
 
   const userData = useAuth();
   let content;
-  content = (
-    <div className="ml-4 relative">
-      <button className="" onClick={toggleMenu}>
-        <MoreVertIcon />
-      </button>
-      {isOpen && (
-        <div className="absolute right-0 w-48 bg-white rounded shadow-md mt-2">
-          <ul className="py-2">
-            <li className="px-4 py-2 hover:bg-gray-100">Edit Post</li>
-            <button
-              disabled={isLoading}
-              onClick={onDeletePostClicked}
-              className="text-red-500 px-4 py-2 hover:bg-gray-100"
-            >
-              Delete Post
-            </button>
-          </ul>
-        </div>
-      )}
-    </div>
-  );
 
-  // if (userData?.userId === post?.userProfile?.userId) {
-  //   console.log('hii');
-  // } else {
-  //   content = (
-  //     <PersonAddIcon className="text-3xl text-cyan-800 bg-red-200 p-2 rounded-full cursor-pointer" />
-  //   );
-  // }
-
-  // console.log(post);
+  if (userData?.userId === post?.userProfile?.userId) {
+    content = (
+      <div className="ml-4 relative">
+        <button className="" onClick={toggleMenu}>
+          <MoreVertIcon />
+        </button>
+        {isOpen && (
+          <div className="absolute right-0 w-48 bg-white rounded shadow-md mt-2">
+            <ul className="py-2">
+              <li className="px-4 py-2 hover:bg-gray-100">Edit Post</li>
+              <button
+                disabled={isLoading}
+                onClick={onDeletePostClicked}
+                className="text-red-500 px-4 py-2 hover:bg-gray-100"
+              >
+                Delete Post
+              </button>
+            </ul>
+          </div>
+        )}
+      </div>
+    );
+  } else {
+    content = (
+      <PersonAddIcon
+        disabled={isAddNewFriendLoading}
+        onClick={onClickAddNewFriend}
+        className="text-3xl text-cyan-800 bg-red-200 p-2 rounded-full cursor-pointer"
+      />
+    );
+  }
 
   return (
     <Helmet title="Post">
       <div className="bg-white dark:bg-gray-800 p-5 rounded-lg mt-5">
         <div className="flex justify-between items-center">
-          {isLoading && <LoadingSpinner />}
+          {(isLoading || isAddNewFriendLoading) && <LoadingSpinner />}
           {isSuccess && (
             <ToastContainer messages={[`Post Deleted!`]} status={'success'} />
           )}
-          {isError && (
-            <ToastContainer messages={error?.data?.errors} status={'error'} />
+          {isAddNewFriendSuccess && (
+            <ToastContainer
+              messages={[`Friend request sent `]}
+              status={'success'}
+            />
           )}
+          {isError ||
+            (isAddNewFriendIsError && (
+              <ToastContainer
+                messages={
+                  error?.data?.errors || isAddNewFriendError?.data?.errors
+                }
+                status={'error'}
+              />
+            ))}
           <div className="flex items-center">
             <Avatar
               src={`https://res.cloudinary.com/dwy4eglsn/image/upload/v1686519924/${post?.userProfile?.profilePicture}.jpg`}
+              style={{ backgroundColor: 'red' }}
               className="h-10 w-10 rounded-full object-cover"
             />
             <div className="ml-5">
@@ -96,10 +156,12 @@ const Post = ({ postId }) => {
                 <p className="mr-2">
                   Role:{' '}
                   <span className="dark:text-gray-300">
-                    {post?.userProfile?.role}
+                    {post?.userProfile?.role}.
                   </span>
                 </p>
-                <Time time={post?.dateCreated} />
+                <p>
+                  <Time time={post?.dateCreated} />
+                </p>
               </div>
             </div>
           </div>
@@ -118,10 +180,11 @@ const Post = ({ postId }) => {
 
         {post?.videoUrl && (
           <video
+            // ref={videoRef}
             controls
-            autoPlay
-            loop
-            onEnded={(event) => event.target.play()}
+            // autoPlay
+            // loop
+            // onEnded={(event) => event.target.play()}
             src={`https://res.cloudinary.com/dwy4eglsn/video/upload/v1686615317/${post?.videoUrl}.mp4`}
             alt={post?.videoUrl}
             className="mt-2 rounded-lg h-[25rem] w-full object-cover"
