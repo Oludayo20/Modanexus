@@ -31,7 +31,7 @@ const Login = () => {
       if (data?.data.isRegistrationComplete === false) {
         navigate('/completeRegistration');
       } else {
-        navigate('/dash');
+        navigate('/home');
       }
     }
   }, [isSuccess, navigate, data]);
