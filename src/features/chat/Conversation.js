@@ -44,7 +44,7 @@ const Conversation = ({ myFriendId }) => {
           <>
             <div
               onClick={onClickChat}
-              className="flex justify-between items-center"
+              className="flex justify-between items-center pt-2"
             >
               <div className="flex items-center">
                 <Avatar
