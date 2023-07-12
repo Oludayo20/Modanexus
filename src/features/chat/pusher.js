@@ -1,7 +1,7 @@
-import Pusher from 'pusher-js';
+// import Pusher from 'pusher-js';
 
-const pusher = new Pusher(process.env.REACT_APP_KEY, {
-  cluster: process.env.REACT_APP_CLUSTER
-});
+// const pusher = new Pusher(process.env.REACT_APP_KEY, {
+//   cluster: process.env.REACT_APP_CLUSTER
+// });
 
-export default pusher;
+// export default pusher;

@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "http://progmadeeasy-001-site3.atempurl.com",
+    "target": "https://progmadeeasy-001-site3.atempurl.com",
     "secure": true,
     "changeOrigin": true
   }

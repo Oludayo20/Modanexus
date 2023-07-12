@@ -41,9 +41,11 @@ const HomeNavbar = () => {
     <div className="bg-white dark:bg-gray-800 fixed left-0 top-0 w-full">
       <div className="container mx-auto h-[8vh] flex justify-between">
         <div className="flex items-center">
-          <h1 className="logo text-2xl md:text-4xl font-bold text-red-500 tracking-wide">
-            Mod<span className="text-gray-400">aNe</span>xus
-          </h1>
+          <NavLink to="/">
+            <h1 className="logo text-2xl md:text-4xl font-bold text-red-500 tracking-wide">
+              Mod<span className="text-gray-400">aNe</span>xus
+            </h1>
+          </NavLink>
         </div>
 
         {/* <div className="flex items-center w-[30vw]">

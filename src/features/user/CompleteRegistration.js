@@ -55,7 +55,7 @@ const CompleteRegistration = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/dash');
+      navigate('/home');
     }
   }, [isSuccess, navigate]);
 
@@ -288,7 +288,7 @@ const CompleteRegistration = () => {
                 </p>
               </div>
 
-              <div className="flex">
+              <div className="flex items-center justify-center">
                 <div className="mt-4">
                   <label
                     htmlFor="select-option"
@@ -316,11 +316,12 @@ const CompleteRegistration = () => {
                   </label>
                   <select
                     id="select-option"
-                    className="flex-shrink-0 z-10 inline-flex items-center text-lg text-center px-4 py-3 text-gray-600 bg-gray-300 mt-2 border border-gray-300 rounded-r-lg dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                    className="bg-gray-300 text-gray-600 text-lg rounded-r-lg px-4 py-3  border-l-gray-100 dark:border-l-gray-700 mt-2 border border-l-2 focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
+                    // className="flex-shrink-0 z-10 inline-flex items-center text-lg text-center px-4 py-3 text-gray-600 bg-gray-300 mt-2 border border-gray-300 rounded-r-lg dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-red-500 dark:focus:border-red-500"
                     value={selectedState}
                     onChange={(e) => setSelectedState(e.target.value)}
                   >
-                    <option value="">Select your country</option>
+                    <option value="">Select your state</option>
                     {states}
                   </select>
                 </div>

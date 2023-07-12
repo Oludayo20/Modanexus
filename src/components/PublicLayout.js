@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import HeaderLink from './header/HerderLink';
 import DarkModeIcon from '@mui/icons-material/DarkMode';
 import LightModeIcon from '@mui/icons-material/LightMode';
@@ -61,9 +61,11 @@ export const PublicHeader = () => {
     <div className="bg-white dark:bg-gray-800 fixed left-0 top-0 w-full">
       <div className="container mx-auto h-[7vh] flex justify-between">
         <div className="flex items-center">
-          <h1 className="logo text-2xl md:text-4xl font-bold text-red-500 tracking-wide">
-            Mod<span className="text-gray-400">aNe</span>xus
-          </h1>
+          <NavLink to="/">
+            <h1 className="logo text-2xl md:text-4xl font-bold text-red-500 tracking-wide">
+              Mod<span className="text-gray-400">aNe</span>xus
+            </h1>
+          </NavLink>
         </div>
 
         <ul className="flex items-center">
