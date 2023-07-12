@@ -24,10 +24,10 @@ const FriendsList = () => {
 
   const {
     data: friendRequest,
-    isLoading: friendRequestLoading,
-    isSuccess: friendRequestSuccess,
-    isError: friendRequestIsError,
-    error: friendRequestError
+    // isLoading: friendRequestLoading,
+    isSuccess: friendRequestSuccess
+    // isError: friendRequestIsError,
+    // error: friendRequestError
   } = useReceivedFriendRequestQuery('friendsRequestList', {
     pollingInterval: 15000,
     refetchOnFocus: true,

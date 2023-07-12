@@ -1,9 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Avatar } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
-import AddCommentIcon from '@mui/icons-material/AddComment';
-import DoneIcon from '@mui/icons-material/Done';
 import CallIcon from '@mui/icons-material/Call';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import AddIcon from '@mui/icons-material/Add';
@@ -28,8 +25,7 @@ const Chat = () => {
     })
   });
 
-  const [sendMessage, { isLoading, isSuccess, isError, error }] =
-    useSendMessageMutation();
+  const [sendMessage, { isLoading, isError, error }] = useSendMessageMutation();
 
   const [messageText, setMessageText] = useState('');
 

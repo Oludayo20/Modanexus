@@ -1,14 +1,8 @@
-import { Avatar, AvatarGroup } from '@mui/material';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import SearchIcon from '@mui/icons-material/Search';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DoneAllIcon from '@mui/icons-material/DoneAll';
-import AddCommentIcon from '@mui/icons-material/AddComment';
-import DoneIcon from '@mui/icons-material/Done';
 import Helmet from '../../components/Helmet';
 import { useMyFriendsQuery } from '../friends/friendApiSlice';
 import MyFriendsList from '../friends/MyFriendsList';
-import { useChatLayoutQuery } from './chatApiSlice';
 import Conversation from './Conversation';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import ToastContainer from '../../utils/ToastContainer';

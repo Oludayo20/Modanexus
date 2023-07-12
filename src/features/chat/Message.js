@@ -28,7 +28,7 @@ const Message = ({ sender, receiver, pE }) => {
   let content;
 
   if (isSuccess) {
-    const { id, entities } = messages;
+    const { entities } = messages;
 
     content = (
       <>

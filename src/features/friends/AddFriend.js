@@ -6,7 +6,6 @@ import LoadingSpinner from '../../utils/LoadingSpinner';
 import ToastContainer from '../../utils/ToastContainer';
 import CheckIcon from '@mui/icons-material/Check';
 import PendingIcon from '@mui/icons-material/Pending';
-import CloseIcon from '@mui/icons-material/Close';
 
 const AddFriend = ({ friendId }) => {
   const { friend } = useGetFriendsQuery('friendList', {
@@ -22,29 +21,29 @@ const AddFriend = ({ friendId }) => {
   let content;
 
   const onClickAddNewFriend = async () => {
-    const req = await addNewFriend(friend?.userName);
+    await addNewFriend(friend?.userName);
   };
 
   let status;
 
-  if (friend?.friendshipStatus == 0) {
+  if (friend?.friendshipStatus === 0) {
     status = (
       <CheckIcon className="text-2xl text-white bg-red-500 p-1 rounded-full cursor-pointer" />
     );
-  } else if (friend?.friendshipStatus == 2) {
+  } else if (friend?.friendshipStatus === 2) {
     status = (
       <PersonAddIcon
         onClick={onClickAddNewFriend}
         className="text-2xl text-white bg-red-500 p-1 rounded-full cursor-pointer"
       />
     );
-  } else if (friend?.friendshipStatus == 3) {
+  } else if (friend?.friendshipStatus === 3) {
     status = (
       <PendingIcon className="text-2xl text-white bg-red-500 p-1 rounded-full cursor-pointer" />
     );
   }
 
-  if (userData?.id == friend?.id) {
+  if (userData?.id === friend?.id) {
   } else {
     content = (
       <>

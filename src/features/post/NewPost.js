@@ -170,7 +170,7 @@ const NewPost = () => {
         videoData = data;
       }
 
-      const post = await addNewPost({
+      await addNewPost({
         content,
         imageUrl: imageData ? imageData.public_id : selectedImages,
         videoUrl: videoData ? videoData.public_id : selectedVideos,

@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
@@ -15,7 +14,7 @@ const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
 const ForgetPassword = () => {
   const emailRef = useRef();
 
-  const [forgetPassword, { data, isLoading, isSuccess, isError, error }] =
+  const [forgetPassword, { isLoading, isSuccess, isError, error }] =
     useForgetPasswordMutation();
 
   const [email, setEmail] = useState('');

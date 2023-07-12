@@ -1,12 +1,10 @@
 import React from 'react';
-import { selectCurrentToken } from './authSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, Navigate, Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useLocation, Navigate, Outlet } from 'react-router-dom';
 import { isValidToken } from '../../utils/jwt';
-import { setUserData, setCredentials } from './authSlice';
+import { setCredentials } from './authSlice';
 
 const RequireAuth = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
 

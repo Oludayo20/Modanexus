@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import { useResendVerifyEmailMutation } from './authApiSlice';
 import { toast } from 'react-toastify';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import ToastContainer from '../../utils/ToastContainer';
 import Helmet from '../../components/Helmet';
@@ -15,7 +14,7 @@ const EMAIL_REGEX = /^\S+@\S+\.\S+$/;
 const ResendVerificationEmail = () => {
   const emailRef = useRef();
 
-  const [resendVerifyEmail, { data, isLoading, isSuccess, isError, error }] =
+  const [resendVerifyEmail, { isLoading, isSuccess, isError, error }] =
     useResendVerifyEmailMutation();
 
   const [email, setEmail] = useState('');

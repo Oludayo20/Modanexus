@@ -40,10 +40,6 @@ const MyFriendsList = () => {
     MyFriendsListContent = <div className="">{allMyFriends}</div>;
   }
 
-  const toggleOpen = () => {
-    setIsOpen(!isOpen);
-  };
-
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }) => {

@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 import { toast } from 'react-toastify';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useLoginMutation } from './authApiSlice';
 import { useDispatch } from 'react-redux';
-import { setUserData, setCredentials } from './authSlice';
+import { setCredentials } from './authSlice';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import ToastContainer from '../../utils/ToastContainer';
 import GoogleIcon from '@mui/icons-material/Google';
-import { setSession } from '../../utils/jwt';
 import Helmet from '../../components/Helmet';
 
 const Login = () => {

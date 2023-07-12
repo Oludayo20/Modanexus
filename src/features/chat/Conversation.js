@@ -6,6 +6,7 @@ import Time from '../../utils/time';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import DoneAllIcon from '@mui/icons-material/DoneAll';
+import LoadingSpinner from '../../utils/LoadingSpinner';
 
 const Conversation = ({ myFriendId }) => {
   const userData = useAuth();
@@ -18,10 +19,10 @@ const Conversation = ({ myFriendId }) => {
 
   const {
     data: messages,
-    isLoading: messagesLoading,
-    isSuccess: messagesSuccess,
-    isError: messagesError,
-    error: messagesErrorData
+    isLoading: messagesLoading
+    // isSuccess: messagesSuccess,
+    // isError: messagesError,
+    // error: messagesErrorData
   } = useChatLayoutQuery(userData?.userName, {
     pollingInterval: 15000,
     refetchOnFocus: true,
@@ -38,7 +39,7 @@ const Conversation = ({ myFriendId }) => {
     const { data: msg } = messages;
 
     msg.forEach((ms) => {
-      if (myFnd.userName == ms.senderUserName) {
+      if (myFnd.userName === ms.senderUserName) {
         conversation = (
           <>
             <div
@@ -70,7 +71,7 @@ const Conversation = ({ myFriendId }) => {
             <hr className="ml-10 mt-2" />
           </>
         );
-      } else if (myFnd?.userName == ms?.receiverUserName) {
+      } else if (myFnd?.userName === ms?.receiverUserName) {
         conversation = (
           <>
             <div
@@ -108,7 +109,12 @@ const Conversation = ({ myFriendId }) => {
     });
   }
 
-  return <>{conversation}</>;
+  return (
+    <>
+      {messagesLoading && <LoadingSpinner />}
+      {conversation}
+    </>
+  );
 };
 
 export default Conversation;

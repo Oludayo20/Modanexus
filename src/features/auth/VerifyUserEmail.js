@@ -11,7 +11,7 @@ const VerifyUserEmail = () => {
   const userId = queryParams.get('userId');
   const code = queryParams.get('code');
 
-  const [verifyEmail, { data, isLoading, isSuccess, isError, error }] =
+  const [verifyEmail, { isLoading, isSuccess, isError, error }] =
     useVerifyEmailMutation();
 
   const navigate = useNavigate();
@@ -19,8 +19,6 @@ const VerifyUserEmail = () => {
   useEffect(() => {
     if (isSuccess) {
       navigate('/login');
-    }
-    if (isError) {
     }
   }, [isSuccess, navigate]);
 
@@ -113,7 +111,7 @@ const VerifyUserEmail = () => {
           <p className="mt-4 text-sm">
             If you’re having trouble Verifying your Email Address, chat with out
             support system:{' '}
-            <a href="" className="text-red-500">
+            <a href="/" className="text-red-500">
               ModaNexus
             </a>
           </p>
