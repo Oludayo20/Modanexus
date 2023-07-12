@@ -4,7 +4,7 @@ import WorkIcon from '@mui/icons-material/Work';
 import TwitterIcon from '@mui/icons-material/Twitter';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import { useGetUserQuery } from './userApiSlice';
-import { memo } from 'react';
+import { memo, useEffect, useRef, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import ToastContainer from '../../utils/ToastContainer';
@@ -12,6 +12,7 @@ import NearbyErrorIcon from '@mui/icons-material/NearbyError';
 import FriendsList from '../friends/FriendsList';
 
 const UserProfile = () => {
+  const modalContent = useRef(null);
   const {
     data: user,
     isLoading,
@@ -19,6 +20,19 @@ const UserProfile = () => {
     isError,
     error
   } = useGetUserQuery();
+
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenuTop = () => setIsOpen(!isOpen);
+
+  // close on click outside
+  useEffect(() => {
+    const clickHandler = ({ target }) => {
+      if (!isOpen || modalContent.current.contains(target)) return;
+      setIsOpen(false);
+    };
+    document.addEventListener('click', clickHandler);
+    return () => document.removeEventListener('click', clickHandler);
+  }, []);
 
   let content;
 
@@ -42,7 +56,30 @@ const UserProfile = () => {
                 <p>{data?.role}</p>
               </div>
             </div>
-            <MoreVertIcon className="text-lg" />
+            {/* <MoreVertIcon className="text-lg" /> */}
+            <div className="ml-4 relative">
+              <button className="text-lg" onClick={toggleMenuTop}>
+                <MoreVertIcon />
+              </button>
+              {isOpen && (
+                <div className="absolute right-0 w-48 dark:bg-gray-700 rounded shadow-md mt-2">
+                  <ul className="py-2">
+                    <li className="px-4 py-2 hover:bg-gray-100">
+                      Edit Account
+                    </li>
+                    <li className="px-4 py-2 hover:bg-gray-100">
+                      2FA Settings
+                    </li>
+                    <li className="text-red-500 px-4 py-2 hover:bg-gray-100">
+                      Report Complain
+                    </li>
+                    <li className="text-red-500 px-4 py-2 hover:bg-gray-100">
+                      Delete Account
+                    </li>
+                  </ul>
+                </div>
+              )}
+            </div>
           </div>
 
           <hr className="my-5" />

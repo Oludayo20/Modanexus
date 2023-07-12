@@ -31,7 +31,7 @@ const Conversation = ({ myFriendId }) => {
 
   const navigate = useNavigate();
 
-  const onClickChat = () => navigate(`/dash/single-chat/${myFriendId}`);
+  const onClickChat = () => navigate(`/single-chat/${myFriendId}`);
 
   let conversation;
   if (myFriend && messages) {
