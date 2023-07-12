@@ -27,7 +27,7 @@ const UserProfile = () => {
   // close on click outside
   useEffect(() => {
     const clickHandler = ({ target }) => {
-      if (!isOpen || modalContent.current.contains(target)) return;
+      if (!isOpen) return;
       setIsOpen(false);
     };
     document.addEventListener('click', clickHandler);
@@ -62,7 +62,7 @@ const UserProfile = () => {
                 <MoreVertIcon />
               </button>
               {isOpen && (
-                <div className="absolute right-0 w-48 dark:bg-gray-700 rounded shadow-md mt-2">
+                <div className="absolute right-0 w-48 bg-white dark:bg-gray-700 rounded shadow-md mt-2">
                   <ul className="py-2">
                     <li className="px-4 py-2 hover:bg-gray-100">
                       Edit Account

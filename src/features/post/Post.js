@@ -119,6 +119,14 @@ const Post = ({ postId }) => {
     );
   }
 
+  function playVideo(video) {
+    video.play();
+  }
+
+  function pauseVideo(video) {
+    video.pause();
+  }
+
   return (
     <Helmet title="Post">
       <div className="bg-white dark:bg-gray-800 p-5 rounded-lg mt-5">
@@ -180,14 +188,13 @@ const Post = ({ postId }) => {
 
         {post?.videoUrl && (
           <video
-            // ref={videoRef}
             controls
-            // autoPlay
-            // loop
-            // onEnded={(event) => event.target.play()}
+            autoplay
             src={`https://res.cloudinary.com/dwy4eglsn/video/upload/v1686615317/${post?.videoUrl}.mp4`}
             alt={post?.videoUrl}
-            className="mt-2 rounded-lg h-[25rem] w-full object-cover"
+            class="mt-2 rounded-lg h-[25rem] w-full object-cover"
+            onFocus="play"
+            onBlur="pause"
           />
         )}
 
