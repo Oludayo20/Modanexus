@@ -32,7 +32,7 @@ export const postsApiSlice = apiSlice.injectEndpoints({
     }),
     addNewPost: builder.mutation({
       query: (initialPost) => {
-        console.log(initialPost);
+        // console.log(initialPost);
 
         return {
           url: '/posts',
@@ -61,6 +61,14 @@ export const postsApiSlice = apiSlice.injectEndpoints({
         body: { postId }
       }),
       invalidatesTags: (result, error, arg) => [{ type: 'Post', id: arg.id }]
+    }),
+    getAUserPost: builder.query({
+      query: (id) => ({
+        url: `posts/get-post-by-user-profile-id/${id}`,
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
+        }
+      })
     })
   })
 });
@@ -69,7 +77,8 @@ export const {
   useGetPostsQuery,
   useAddNewPostMutation,
   useUpdatePostMutation,
-  useDeletePostMutation
+  useDeletePostMutation,
+  useGetAUserPostQuery
 } = postsApiSlice;
 
 // returns the query result object

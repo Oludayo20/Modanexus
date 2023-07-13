@@ -31,9 +31,7 @@ const Search = () => {
 
   let schRes;
 
-  if (searchRes != null) {
-    console.log(searchRes);
-
+  if (searchRes?.length > 0) {
     schRes = searchRes.map((data) => (
       <div key={data.id} onClick={() => onClickUser(data.id)}>
         <div className="flex items-center">
@@ -68,6 +66,10 @@ const Search = () => {
         <hr className="my-3" />
       </div>
     ));
+  } else if (searchRes?.length === 0) {
+    schRes = (
+      <h3 className="dark:text-gray-200 text-gray-800">{`User with the name ${searchValue} not found!`}</h3>
+    );
   }
 
   return (

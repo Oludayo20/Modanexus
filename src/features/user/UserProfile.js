@@ -10,6 +10,8 @@ import LoadingSpinner from '../../utils/LoadingSpinner';
 import ToastContainer from '../../utils/ToastContainer';
 import NearbyErrorIcon from '@mui/icons-material/NearbyError';
 import FriendsList from '../friends/FriendsList';
+import { useGetAUserPostQuery } from '../post/postAPiSlice';
+import Post from '../post/Post';
 
 const UserProfile = () => {
   const modalContent = useRef(null);
@@ -20,6 +22,18 @@ const UserProfile = () => {
     isError,
     error
   } = useGetUserQuery();
+
+  // const {
+  //   data,
+  //   isLoading: postLoading,
+  //   isSuccess: postSuccess,
+  //   isError: postIsError,
+  //   error: postError
+  // } = useGetAUserPostQuery(user?.data.id, {
+  //   pollingInterval: 15000,
+  //   refetchOnFocus: true,
+  //   refetchOnMountOrArgChange: true
+  // });
 
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenuTop = () => setIsOpen(!isOpen);
@@ -132,6 +146,18 @@ const UserProfile = () => {
     return content;
   }
 
+  // let userPost;
+
+  // if (postSuccess) {
+  //   const { data: posts } = data;
+
+  //   let allPost =
+  //     posts?.length &&
+  //     posts.map((post) => <Post key={post.id} postId={post.id} />);
+
+  //   userPost = <div className="">{allPost}</div>;
+  // }
+
   return (
     <div className="">
       {isError && (
@@ -141,7 +167,9 @@ const UserProfile = () => {
           color={'bg-red-500'}
         />
       )}
-      {isSuccess && content} {isLoading && <LoadingSpinner />}
+      {isLoading && <LoadingSpinner />}
+      {isSuccess && content}
+      {/* {postSuccess && userPost} */}
     </div>
   );
 };

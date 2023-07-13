@@ -16,7 +16,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import PendingIcon from '@mui/icons-material/Pending';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useGetPostsQuery } from '../post/postAPiSlice';
+import { useGetAUserPostQuery } from '../post/postAPiSlice';
 
 const User = () => {
   const { id } = useParams();
@@ -28,12 +28,12 @@ const User = () => {
   });
 
   const {
-    data: posts,
+    data,
     isLoading: postLoading,
     isSuccess: postSuccess,
     isError: postIsError,
     error: postError
-  } = useGetPostsQuery('postsList', {
+  } = useGetAUserPostQuery(id, {
     pollingInterval: 15000,
     refetchOnFocus: true,
     refetchOnMountOrArgChange: true
@@ -66,11 +66,11 @@ const User = () => {
   }
 
   let content;
-  console.log(user);
+  // console.log(user);
 
   if (user != null) {
     content = (
-      <div className="h-[90vh] overflow-auto pro pb-28">
+      <div className="h-[90vh] overflow-auto pro">
         <div className="bg-white dark:bg-gray-800 rounded-lg p-5 dark:text-gray-200">
           <div className="flex justify-between items-center">
             <div className="flex items-center">
@@ -140,22 +140,22 @@ const User = () => {
 
   let userPost;
 
-  // if (postSuccess) {
-  //   const { ids } = posts;
-  //   console.log(ids);
+  if (postSuccess) {
+    const { data: posts } = data;
 
-  //   let allPost =
-  //     ids?.length && ids.map((postId) => <Post key={postId} postId={postId} />);
+    let allPost =
+      posts?.length &&
+      posts.map((post) => <Post key={post.id} postId={post.id} />);
 
-  //   userPost = <div className="">{allPost}</div>;
-  // }
+    userPost = <div className="">{allPost}</div>;
+  }
 
   const handleBack = () => window.history.back();
 
   return (
     <div className="">
       <div>
-        <div className="flex items-center justify-between text-slate-600 mb-1">
+        <div className="flex items-center justify-between text-slate-600">
           <ArrowBackIcon
             onClick={handleBack}
             className="w-5 h-5 dark:text-gray-200"
@@ -166,7 +166,17 @@ const User = () => {
         </div>
         {content}
       </div>
-      {userPost}
+      <div className="mt-4">
+        <div className="flex items-center justify-between text-slate-600">
+          <div className="text-xs dark:text-gray-200 font-semibold uppercase pt-1.5 px-4">
+            User Posts
+          </div>
+          <div className="text-xs dark:text-gray-200 font-semibold uppercase pt-1.5 px-4">
+            User Activities
+          </div>
+        </div>
+        <div className="mb-20">{userPost}</div>
+      </div>
     </div>
   );
 };

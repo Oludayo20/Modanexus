@@ -56,14 +56,14 @@ const Post = ({ postId }) => {
   };
 
   const onDeletePostClicked = async () => {
-    console.log({ postId: post?.id });
+    // console.log({ postId: post?.id });
     const data = await deletePost({ postId: post?.id });
-    console.log(data);
+    // console.log(data);
   };
 
   const onClickAddNewFriend = async () => {
     const req = await addNewFriend(post?.userProfile?.userName);
-    console.log(req);
+    // console.log(req);
   };
 
   const userData = useAuth();

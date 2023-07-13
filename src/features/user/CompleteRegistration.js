@@ -77,7 +77,7 @@ const CompleteRegistration = () => {
           file: profilePicture,
           fileType: 'image'
         });
-        console.log(data);
+        // console.log(data);
 
         if (data) {
           await completeReg({

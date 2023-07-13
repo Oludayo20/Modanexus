@@ -157,7 +157,7 @@ const NewPost = () => {
           file: selectedImages,
           fileType: 'image'
         });
-        console.log(data);
+        // console.log(data);
         imageData = data;
       }
 
@@ -166,7 +166,7 @@ const NewPost = () => {
           file: selectedVideos,
           fileType: 'video'
         });
-        console.log(data);
+        // console.log(data);
         videoData = data;
       }
 
