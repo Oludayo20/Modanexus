@@ -85,23 +85,19 @@ const MyFriendsList = () => {
         leaveStart="opacity-100 translate-y-0"
         leaveEnd="opacity-0 translate-y-4"
       >
-        <div
-          ref={modalContent}
-          className="bg-white dark:bg-gray-800 overflow-auto max-w-2xl h-[50vh] w-full max-h-full rounded-t-xl shadow-lg"
-        >
+        <div className="overflow-hidden bg-white dark:bg-gray-800 max-w-2xl h-[50vh] w-full max-h-full rounded-t-xl shadow-lg">
+          <h1 className="dark:text-gray-200 text-gray-800 p-4">
+            My Friend List:{' '}
+          </h1>
           {isLoading && <LoadingSpinner />}
           {isError && (
             <ToastContainer messages={error?.data?.errors} status={'error'} />
           )}
-          <div className="overflow-auto p-5 mt-5 rounded-lg">
-            <h1 className="dark:text-gray-200 text-gray-800">
-              My Friend List:{' '}
-            </h1>
-
-            <div className="mt-2 overflow-auto h-[35vh]">
-              {MyFriendsListContent}
-            </div>
+          {/* <div className="p-5 mt-2 rounded-lg pb-10"> */}
+          <div className="p-5 overflow-auto h-[35vh] pb-10">
+            {MyFriendsListContent}
           </div>
+          {/* </div> */}
         </div>
       </Transition>
     </>
