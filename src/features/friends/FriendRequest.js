@@ -8,6 +8,7 @@ import CheckIcon from '@mui/icons-material/Check';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import ToastContainer from '../../utils/ToastContainer';
+import { useNavigate } from 'react-router-dom';
 
 const FriendRequest = ({ friendRequestId }) => {
   const { friendRequest } = useReceivedFriendRequestQuery('friendList', {
@@ -37,12 +38,21 @@ const FriendRequest = ({ friendRequestId }) => {
     await deleteFriendRequest(friendRequest?.friendUserProfile?.userName);
   };
 
+  const navigate = useNavigate();
+
+  const onClickUser = (userId) => {
+    navigate(`/user/${userId}`);
+  };
+
   let content;
 
   content = (
     <>
       <div className="flex justify-between items-center">
-        <div className="flex items-center">
+        <div
+          className="flex items-center"
+          onClick={() => onClickUser(friendRequest?.friendUserProfile?.id)}
+        >
           <div className="relative">
             <Avatar
               src={`https://res.cloudinary.com/dwy4eglsn/image/upload/v1686519924/${friendRequest?.friendUserProfile?.profilePicture}.jpg`}

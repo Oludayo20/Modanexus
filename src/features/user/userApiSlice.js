@@ -17,7 +17,8 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         return response.status === 200 && !result.isError;
       },
       transformResponse: (responseData) => {
-        const loadedUsers = responseData.map((user) => {
+        console.log(responseData);
+        const loadedUsers = responseData?.data.map((user) => {
           user.id = user._id;
           return user;
         });
@@ -39,15 +40,13 @@ export const usersApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials }
       })
     }),
-    addNewUser: builder.mutation({
-      query: (initialUserData) => ({
-        url: '/users',
-        method: 'POST',
-        body: {
-          ...initialUserData
+    search: builder.mutation({
+      query: (userName) => ({
+        url: `userprofile/search-for-a-user-profile?userName=${userName}`,
+        validateStatus: (response, result) => {
+          return response.status === 200 && !result.isError;
         }
-      }),
-      invalidatesTags: [{ type: 'User', id: 'LIST' }]
+      })
     }),
     updateUser: builder.mutation({
       query: (initialUserData) => ({
@@ -74,7 +73,7 @@ export const {
   useGetUserQuery,
   useGetUsersQuery,
   useCompleteRegMutation,
-  useAddNewUserMutation,
+  useSearchMutation,
   useUpdateUserMutation,
   useDeleteUserMutation
 } = usersApiSlice;

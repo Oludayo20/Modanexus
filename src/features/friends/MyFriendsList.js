@@ -98,7 +98,7 @@ const MyFriendsList = () => {
               My Friend List:{' '}
             </h1>
 
-            <div className="mt-2 overflow-auto h-[20vh]">
+            <div className="mt-2 overflow-auto h-[50vh]">
               {MyFriendsListContent}
             </div>
           </div>

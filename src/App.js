@@ -20,6 +20,9 @@ import ChatLayout from './features/chat/ChatLayout';
 import Chat from './features/chat/Chat';
 import WelcomeScreen from './components/WelcomeScreen';
 import MainLayout from './components/MainLayout';
+import Search from './features/search/Search';
+import Notification from './features/notification/Notification';
+import User from './features/user/User';
 
 function App() {
   return (
@@ -52,6 +55,9 @@ function App() {
                 <Route path="profile" element={<UserProfile />} />
                 <Route path="chat" element={<ChatLayout />} />
                 <Route path="single-chat/:id" element={<Chat />} />
+                <Route path="user/:id" element={<User />} />
+                <Route path="search" element={<Search />} />
+                <Route path="notification" element={<Notification />} />
               </Route>
             </Route>
           </Route>

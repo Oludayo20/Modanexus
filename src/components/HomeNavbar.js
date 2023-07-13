@@ -4,8 +4,9 @@ import LightModeIcon from '@mui/icons-material/LightMode';
 import HeaderLink from './header/HerderLink';
 import ChatIcon from '@mui/icons-material/Chat';
 import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
-import Notifications from './header/Notification';
 import { NavLink } from 'react-router-dom';
+import SearchIcon from '@mui/icons-material/Search';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 const HomeNavbar = () => {
   const [currentTheme, setCurrentTheme] = useState('');
@@ -73,7 +74,25 @@ const HomeNavbar = () => {
             <HeaderLink Icon={ChatIcon} active="chat" text="Chat" feed hidden />
           </NavLink>
 
-          <Notifications text="Notifications" feed active />
+          <NavLink
+            to="search"
+            className="md:inline-flex cursor-pointer text-lg hover:text-black hover:scale-110 transition-all dark:text-gray-400"
+          >
+            <HeaderLink Icon={SearchIcon} active="search" text="Search" feed />
+          </NavLink>
+
+          <NavLink
+            to="notification"
+            className="md:inline-flex cursor-pointer text-lg hover:text-black hover:scale-110 transition-all dark:text-gray-400"
+          >
+            <HeaderLink
+              Icon={NotificationsIcon}
+              active="notification"
+              text="Notification"
+              feed
+            />
+            {/* <div className="absolute top-0 right-0 w-2.5 h-2.5 bg-red-500 border-2 border-white rounded-full"></div> */}
+          </NavLink>
 
           {currentTheme === 'dark' ? (
             <div

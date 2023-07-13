@@ -6,14 +6,16 @@ import { useGetPostsQuery } from './postAPiSlice';
 import Time from '../../utils/time';
 import Helmet from '../../components/Helmet';
 import useAuth from '../../hooks/useAuth';
-import { useState, useRef, memo } from 'react';
+import { useState, memo, useRef } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useDeletePostMutation } from './postAPiSlice';
 import LoadingSpinner from '../../utils/LoadingSpinner';
 import ToastContainer from '../../utils/ToastContainer';
-import { useEffect } from 'react';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useAddNewFriendMutation } from '../friends/friendApiSlice';
+import { useNavigate } from 'react-router-dom';
+import CheckIcon from '@mui/icons-material/Check';
+import PendingIcon from '@mui/icons-material/Pending';
 
 const Post = ({ postId }) => {
   const { post } = useGetPostsQuery('postList', {
@@ -21,6 +23,18 @@ const Post = ({ postId }) => {
       post: data?.entities[postId]
     })
   });
+
+  // Video
+  const videoRef = useRef(null);
+
+  const handlePlay = () => {
+    videoRef.current.play();
+  };
+
+  const handlePause = () => {
+    videoRef.current.pause();
+  };
+  // End of Video
 
   const [deletePost, { isLoading, isSuccess, isError, error }] =
     useDeletePostMutation();
@@ -52,43 +66,11 @@ const Post = ({ postId }) => {
     console.log(req);
   };
 
-  {
-    /* Video Auto Play*/
-  }
-  const videoRef = useRef(null);
-
-  useEffect(() => {
-    if (!videoRef.current) return;
-
-    const options = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.5 // Adjust this value as needed
-    };
-
-    const handleIntersection = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          videoRef.current.play();
-        } else {
-          videoRef.current.pause();
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, options);
-    observer.observe(videoRef.current);
-
-    return () => {
-      observer.unobserve(videoRef.current);
-    };
-  }, []);
-
   const userData = useAuth();
-  let content;
+  let status;
 
   if (userData?.userId === post?.userProfile?.userId) {
-    content = (
+    status = (
       <div className="ml-4 relative">
         <button className="" onClick={toggleMenu}>
           <MoreVertIcon />
@@ -110,22 +92,29 @@ const Post = ({ postId }) => {
       </div>
     );
   } else {
-    content = (
-      <PersonAddIcon
-        disabled={isAddNewFriendLoading}
-        onClick={onClickAddNewFriend}
-        className="text-3xl text-cyan-800 bg-red-200 p-2 rounded-full cursor-pointer"
-      />
-    );
+    if (post?.userProfile?.friendshipStatus === 0) {
+      status = (
+        <CheckIcon className="text-2xl text-white bg-red-500 p-1 rounded-full cursor-pointer" />
+      );
+    } else if (post?.userProfile?.friendshipStatus === 2) {
+      status = (
+        <PersonAddIcon
+          onClick={onClickAddNewFriend}
+          className="text-2xl text-white bg-red-500 p-1 rounded-full cursor-pointer"
+        />
+      );
+    } else if (post?.userProfile?.friendshipStatus === 3) {
+      status = (
+        <PendingIcon className="text-2xl text-white bg-red-500 p-1 rounded-full cursor-pointer" />
+      );
+    }
   }
 
-  function playVideo(video) {
-    video.play();
-  }
+  const navigate = useNavigate();
 
-  function pauseVideo(video) {
-    video.pause();
-  }
+  const onClickUser = (userId) => {
+    navigate(`/user/${userId}`);
+  };
 
   return (
     <Helmet title="Post">
@@ -156,7 +145,10 @@ const Post = ({ postId }) => {
               style={{ backgroundColor: 'red' }}
               className="h-10 w-10 rounded-full object-cover"
             />
-            <div className="ml-5">
+            <div
+              className="ml-5"
+              onClick={() => onClickUser(post?.userProfile?.id)}
+            >
               <h1 className="dark:text-gray-200">
                 {post?.userProfile?.firstName} {post?.userProfile?.lastName}
               </h1>
@@ -173,7 +165,7 @@ const Post = ({ postId }) => {
               </div>
             </div>
           </div>
-          {content}
+          {status}
         </div>
 
         <p className="mt-2">{post?.content}</p>
@@ -188,14 +180,18 @@ const Post = ({ postId }) => {
 
         {post?.videoUrl && (
           <video
+            ref={videoRef}
             controls
-            autoplay
-            src={`https://res.cloudinary.com/dwy4eglsn/video/upload/v1686615317/${post?.videoUrl}.mp4`}
+            onFocus={handlePlay}
+            onBlur={handlePause}
             alt={post?.videoUrl}
-            class="mt-2 rounded-lg h-[25rem] w-full object-cover"
-            onFocus="play"
-            onBlur="pause"
-          />
+            className="mt-2 rounded-lg h-[25rem] w-full object-cover"
+          >
+            <source
+              src={`https://res.cloudinary.com/dwy4eglsn/video/upload/v1686615317/${post?.videoUrl}.mp4`}
+              type="video/mp4"
+            />
+          </video>
         )}
 
         {post?.documentUrl && (
@@ -208,10 +204,22 @@ const Post = ({ postId }) => {
           </object>
         )}
 
-        <div className="flex mt-5 items-center">
-          <ThumbUpOffAltOutlinedIcon className="cursor-pointer hover:scale-110 transition-all text-lg text-red-500" />
-          <CommentOutlinedIcon className="cursor-pointer hover:scale-110 transition-all text-lg ml-2" />
-          <IosShareIcon className="cursor-pointer hover:scale-110 transition-all text-lg ml-2" />
+        <div className="flex mt-5 items-center justify-between">
+          <div className="flex items-center">
+            <p className="text-lg text-slate-400">
+              {Math.floor(Math.random() * 100) + 1}
+            </p>
+            <ThumbUpOffAltOutlinedIcon className="ml-1 cursor-pointer hover:scale-110 transition-all text-lg text-red-500" />
+          </div>
+          <div className="flex flex items-center">
+            <p className="text-lg text-slate-400">
+              {Math.floor(Math.random() * 100) + 1}
+            </p>
+            <CommentOutlinedIcon className="mt-2 cursor-pointer hover:scale-110 transition-all text-lg ml-2" />
+          </div>
+          <div className="flex">
+            <IosShareIcon className="cursor-pointer hover:scale-110 transition-all text-lg ml-2" />
+          </div>
         </div>
       </div>
     </Helmet>

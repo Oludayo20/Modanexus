@@ -6,6 +6,7 @@ import LoadingSpinner from '../../utils/LoadingSpinner';
 import ToastContainer from '../../utils/ToastContainer';
 import CheckIcon from '@mui/icons-material/Check';
 import PendingIcon from '@mui/icons-material/Pending';
+import { useNavigate } from 'react-router-dom';
 
 const AddFriend = ({ friendId }) => {
   const { friend } = useGetFriendsQuery('friendList', {
@@ -18,6 +19,9 @@ const AddFriend = ({ friendId }) => {
     useAddNewFriendMutation();
 
   const userData = useAuth();
+
+  const navigate = useNavigate();
+
   let content;
 
   const onClickAddNewFriend = async () => {
@@ -43,12 +47,19 @@ const AddFriend = ({ friendId }) => {
     );
   }
 
+  const onClickUser = (userId) => {
+    navigate(`/user/${userId}`);
+  };
+
   if (userData?.id === friend?.id) {
   } else {
     content = (
       <>
         <div className="flex justify-between items-center">
-          <div className="flex items-center">
+          <div
+            className="flex items-center"
+            onClick={() => onClickUser(friend?.id)}
+          >
             <div className="relative">
               <Avatar
                 src={`https://res.cloudinary.com/dwy4eglsn/image/upload/v1686519924/${friend?.profilePicture}.jpg`}
